@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Secular+One&display=swap');
+  </style>
+  <style>
+    body {
+      font-family: 'Secular One';      
+    }
+
+    h1 {
+      font-family: 'Secular One';
+    }
+  </style>
+  <title>SmolScript.org Homepage</title>
+</head>
+
+<body>
+    {{ }}
+  <div class="mt-10 text-xl container mx-auto px-5">
+    <nav>
+      <div class="x-max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        
+        <h1 class="border-solid border-4 border-black p-3 text-3xl text-black bg-gray400 inline-block"
+        style="box-shadow:6px 6px black"><a href="/">smol script</a> <span
+          style="font-family:Lato; color:#222; font-size:10pt; font-weight:bold;" aria-label="cat ascii art">__( =^ ◡
+          ^=)</span></h1>
+
+        <button onclick="let el = document.getElementById('navbar-default'); if (el.classList.contains('hidden')) el.classList.remove('hidden'); else el.classList.add('hidden');" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+            </svg>
+        </button>      
+        <div class="border border-gray-900 mt-5 bg-gray-100 rounded w-full md:border-0 md:block md:w-auto" id="navbar-default">
+          <ul class="font-medium flex flex-col p-4 md:p-0 mt-0 md:flex-row md:space-x-2 md:border-0 md:bg-white">            
+            {% include nav_link.html url="/" title="Home" %}
+            {% include nav_link.html url="/" title="Getting Started" %}
+            {% include nav_link.html url="/" title="Support" %}
+            {% include nav_link.html url="/" title="Roadmap" %}
+            {% include nav_link.html url="/" title="Demo" %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {{ content }}
+
+    
+  </div>
+
+  <div class="my-10 pt-5 text-base border-t border-1 border-gray-300 container mx-auto px-5" style="font-family: 'Lato';">
+
+    &copy; Copyright Arctus Limited 2023<br />
+    Created by Adrian O'Connor and made available under the MIT license
+  </div>
+</body>
+
+</html>

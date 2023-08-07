@@ -1,86 +1,58 @@
-<!doctype html>
-<html>
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Secular+One&display=swap');
-  </style>
-  <style>
-    body {
-      font-family: 'Secular One';      
-    }
+layout: default
+permalink: /
+selected_nav_item: Home
+---
 
-    h1 {
-      font-family: 'Secular One';
-    }
-  </style>
-  <title>SmolScript.org</title>
-</head>
+<div class="md:flex mt-8 flex-col lg:flex-row">
 
-<body>
-  <div class="mt-10 text-xl container mx-auto px-5">
+      <div class="mx-5 basis-full lg:basis-5/6 pr-10">
 
-    <div xclass="border-solid border-4 border-gray-300 p-1 inline-block">
-      <h1 class="border-solid border-4 border-black p-3 text-3xl text-black bg-gray400 inline-block"
-        style="box-shadow:6px 6px black"><a href="/">smol script</a> <span
-          style="font-family:Lato; color:#222; font-size:10pt; font-weight:bold;" aria-label="cat ascii art">__( =^ ◡
-          ^=)</span></h1>
-    </div>
+        <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">about</h5>
 
-    <div class="md:flex mt-8">
+        <p class="py-3">SmolScript is a mini programming laguage and runtime. It is based on a simple version of Javascript,
+          it features a tiny compiler and VM, and it is very easy to embeded in dotnet and Javascript applications.</p>
 
-      <div class="mx-5 basis-1/2">
-
-        <h5 class="mt-8 text-lg font-bold">about smol</h5>
-
-        <p class="py-3">SmolScript is a mini programming laguage and runtime. It is based on simple Javascript, it features 
-          a tiny compiler and VM that and can be easily embeded in dotnet and Javascript applications.</p>
-
-        <p class="py-3">Our VM provides some interactive debugging features, making it great for building interactive educational
-          apps and, because it is based on Javascript, it is a great learning language.
+        <p class="py-3">The VM provides some nice interactive debugging features, making it great for building educational
+          programming apps and, because it is based on Javascript, it is a great teaching language.
         </p>
 
         <p class="py-3">It is not fast, it is not fancy, but it is very smol.</p>
 
 
-        <h5 class="mt-8 text-lg font-bold">why?</h5>
+        <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">_why?</h5>
 
-        <p class="py-3">There are lots of reasons why you would want to embed a scripting language, but I had a few
-          specific things in mind when I built this:</p>
+        <p class="py-3">There are lots of reasons why you might want a small embedded language. I had these
+          reasons in mind when I started the project:</p>
 
         <div class="px-8">
           <ul role="list" class="list-disc">
-            <li>Let users write scripts for extending big complicated products without needing lots of custom code
-              changes or feature flags</li>
-            <li>To be used as a simple game engine scripting language, for running in a browser based editor</li>
-            <li>A way to build custom logic blocks for low-code app environments</li>
+            <li>Add scripting support to existing applications</li>
+            <li>Use it to power educational programming language tools</li>
+            <li>Be small and compact</li>
+            <li>Learn/teach how compilers work</li>
           </ul>
         </div>
 
       </div>
 
-      <div class="text-lg md:ml-5 p-5 basis-1/4">
-        <div class="border-gray-300 border-2 bg-slate-200 px-5 py-2 text-base rounded-lg">
-        SmolScript was created as a learning project. Everything I  
+      <div class="text-lg mt-12 lg:ml-5 p-5 basis-full lg:basis-1/3">
+        <div class="border-gray-300 border-2 bg-slate-100 px-5 py-2 text-base" style="box-shadow:6px 6px #ace">
+       <p class="my-2">SmolScript was created as a learning project.</p><p class="my-1">Everything I  
         know about compilers was learned from the amazing book <a href="https://craftinginterpreters.com" class="text-blue-600 underline">Crafting
         Interpreters</a>, so if you're also interested in learning how programming languages are created, that
-        is the book for you. It's even free to read online!
-<!--
-        <h4 class="mt-3">Roadmap</h4>
+        is the book for you. It's even free to read online.</p>
+        </div>
 
-        <p>v0.3 (September 2023)<br />This version will bring feature parity between the .net and JS codebases,
-           plus basic debug symbols for much nicer interactive debugging.
-          
-        </p>
-      -->
+        <div class="mt-10">
+          <p class="text-slate-800">Github Links</p>
+          <p class="ml-2 mt-2 text-sm">DotNet: <a href="https://github.com/adrianoconnor/SmolScriptDotNet" class="text-blue-600 underline">github.com/adrianoconnor/SmolScriptDotNet</a></p>
+          <p class="ml-2 mt-2 text-sm">Javascript (TypeScript): <a href="https://github.com/adrianoconnor/SmolScriptDotNet" class="text-blue-600 underline">github.com/adrianoconnor/SmolScriptJS</a></p>
+
         </div>
       </div>
 
     </div>
-  </div>
-</body>
-
-</html>
