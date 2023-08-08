@@ -7,23 +7,39 @@ permalink: /roadmap
 selected_nav_item: Roadmap
 ---
 
-<div class="md:flex mt-8 flex-col lg:flex-row">
+<div class="md:flex mt-4 flex-col lg:flex-row">
 
-      <div class="mx-5 basis-full lg:basis-5/6 pr-10">
-
+      <div class="mx-5 basis-full lg:basis-5/6 md:pr-10">
+        <h2 class="md:hidden">Roadmap</h2>
         <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">coming soon</h5>
 
-        <p class="py-3">???</p>
+        <p class="py-3">We're still in the early phases of this project so things change fast. It's agile! This is our current roadmap for the next version:</p>
 
+        <p class="py-1">
+            <ul role="list" class="list-disc ml-5">            
+                <li>Better debug symbols</li>
+                <li>Step-through debugging linked to symbols</li>
+                <li>'console' added to the standard-library (for console.log)</li>
+                <li>Better error messages</li>                
+            </ul>
+        </p>
 
+        <p class="py-3">As you can probably tell, these features are all related to getting a fully
+            featured interactive demo of the VM (including debug) on the website 😂</p>
+
+        <p class="py-3">Currently the .net and JS/TS versions are roughly in-sync. Sometimes one version gets
+            a little bit ahread of the other, and we do expect the improved debugging features to be in the JS version first.
+        </p>
+
+                
       </div>
 
       <div class="text-lg mt-12 lg:ml-5 p-5 basis-full lg:basis-1/3">
 
         <div class="mt-10">
-          <p class="text-slate-800">Github Links</p>
+          <h6 class="text-slate-800">Github Links</h6>
           <p class="ml-2 mt-2 text-sm">DotNet: <a href="https://github.com/adrianoconnor/SmolScriptDotNet" class="text-blue-600 underline">github.com/adrianoconnor/SmolScriptDotNet</a></p>
-          <p class="ml-2 mt-2 text-sm">Javascript (TypeScript): <a href="https://github.com/adrianoconnor/SmolScriptDotNet" class="text-blue-600 underline">github.com/adrianoconnor/SmolScriptJS</a></p>
+          <p class="ml-2 mt-2 text-sm">Javascript (TypeScript): <a href="https://github.com/adrianoconnor/SmolScriptJS" class="text-blue-600 underline">github.com/adrianoconnor/SmolScriptJS</a></p>
 
         </div>
       </div>
