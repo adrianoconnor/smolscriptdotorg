@@ -4,4 +4,9 @@
     <p class="ml-2 mt-2 text-sm">Javascript version: <a href="https://github.com/adrianoconnor/SmolScriptJS" class="text-blue-600 underline">SmolScriptJS</a></p>
 
     <p class="ml-2 mt-4 text-sm"><a class="github-button" href="https://github.com/adrianoconnor" aria-label="Follow @adrianoconnor on GitHub">Follow @adrianoconnor</a></p>
+
+    {% if jekyll.environment == 'development'%}
+    <p class="ml-2 mt-4 py-2 text-sm italic bg-gray-50 border rounded-lg text-center text-gray-500">This is the development site</p>
+    {% endif %}
 </div>
+
