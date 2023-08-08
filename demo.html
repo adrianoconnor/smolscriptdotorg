@@ -9,124 +9,129 @@ selected_nav_item: Interactive Demo
 
 <div class="md:flex mt-4 flex-col lg:flex-row">
 
-      <div class="mx-5 basis-full lg:basis-5/6 md:pr-10">
+  <div class="mx-5 basis-full lg:basis-full md:pr-10">
 
-        <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">interactive demo</h5>
+    <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">interactive demo</h5>
 
-        <script src="smolscript-v0.3.js"></script>
-  
-        <script>
-            var require = {
-                paths: {
-                    vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs'
-                }
-            };
-        </script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"
-            integrity="sha512-6bIYsGqvLpAiEBXPdRQeFf5cueeBECtAKJjIHer3BhBZNTV3WLcLA8Tm3pDfxUwTMIS+kAZwTUvJ1IrMdX8C5w=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.min.js"
-            integrity="sha512-CCv+DKWw+yZhxf4Z+ExT6HC5G+3S45TeMTYcJyYbdrv4BpK2vyALJ4FoVR/KGWDIPu7w4tNCOC9MJQIkYPR5FA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      
-        <link rel="stylesheet" type="text/css" data-name="vs/editor/editor.main"
-            href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.css">
-          
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.js"
-            integrity="sha512-BtSZPhzoyN8kq1axY6cgOFPSgLJgFwvAZ3WxeDGxEFXeFcFuK2s7Hr+zF75npVHASUY1dxudAfIVzwmgdR89Bw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        
-            <p class="py-3">When you run code in the editor below, it is not running directly in your web browser's Javascript as you might expect, it is running in a standalone VM (and that VM is running in JS). Because of that, this script has no access to anything like document, window or alert().</p>
-      
-      <table style="width:100%;" class="">
-        <tr>
-          <td style="width:33%; min-width: 320px;">
-        
-          </td>
-          <td style="width:33%; min-width: 320px; font-size:0.73em; padding:2px 8px;">Compiled Bytecode</td>
-        
-          <td style="width:33%; min-width: 320px; font-size:0.73em; padding:2px 8px;">Global Variables (in VM)</td>
-        </tr>
-        <tr>
-        <td style="width:33%;" valign="top">
-      <div style="height:200px; border:solid 1px #ccc; padding:3px;" id="smolEditor"></div>
-      <div class="right pt-2">
-        
-        <button onclick="run();" class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Run
-        </button>
-        <p id="err" class="text-sm py-1"></p>
-      </div>
-        </td>
-        <td style="width:33%; font-family:'Courier New'; font-size:0.73em; line-height:1.25em; padding:5px 40px 0px 20px; line-break:anywhere" id="decompiled" valign="top"></td>
-      
-        <td style="width:33%; font-family:'Courier New'; font-size:0.83em; line-height:1.25em; padding:5px 10px" id="results" valign="top"></td>
-      </tr>
-      </table>
-      
-      <script>
-        
-        function run() {
-          try {
-            var start = window.performance.now();
+    <script src="smolscript-v0.3.js"></script>
 
-            document.getElementById("decompiled").innerHTML = '';
-            document.getElementById("results").innerHTML = '';
-            document.getElementById("err").innerText = '';
-
-            var smol = SmolScript.SmolVM;
-
-            var vm = smol.Compile(editor.getValue());
-
-            vm.maxCycles = 100000000;
-
-            document.getElementById("decompiled").innerHTML = `<pre>${vm.decompile().replaceAll('<', '&lt;')}</pre>`;
-            
-            vm.run();
-                        
-            var x = `<table>`;
-            
-            Object.keys(vm.globalEnv._variables).forEach((key) => {
-            x += `<tr><td style="font-weight:bold;">${key}</td><td>${vm.globalEnv._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
-            });
-            
-            x += '</table>';
-        
-            var end = window.performance.now();
-            var time = end - start;
-
-            document.getElementById("results").innerHTML = x;
-            document.getElementById("err").innerText = `Done in ${Math.round(time, 20)} ms`;
-          }
-          catch(e) {
-            document.getElementById("err").innerText = e;
-          }
+    <script>
+      var require = {
+        paths: {
+          vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs'
         }
-        
-        editor = monaco.editor.create(document.getElementById('smolEditor'), {
-            value: `var y = 0;
+      };
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"
+      integrity="sha512-6bIYsGqvLpAiEBXPdRQeFf5cueeBECtAKJjIHer3BhBZNTV3WLcLA8Tm3pDfxUwTMIS+kAZwTUvJ1IrMdX8C5w=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.nls.min.js"
+      integrity="sha512-CCv+DKWw+yZhxf4Z+ExT6HC5G+3S45TeMTYcJyYbdrv4BpK2vyALJ4FoVR/KGWDIPu7w4tNCOC9MJQIkYPR5FA=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" type="text/css" data-name="vs/editor/editor.main"
+      href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/editor/editor.main.js"
+      integrity="sha512-BtSZPhzoyN8kq1axY6cgOFPSgLJgFwvAZ3WxeDGxEFXeFcFuK2s7Hr+zF75npVHASUY1dxudAfIVzwmgdR89Bw=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <p class="py-3">When you run code in the editor below, it is not running directly in your web browser's Javascript
+      as you might expect, it is running in a standalone VM (and that VM is running in JS). Because of that, this script
+      has no access to anything like document, window or alert().</p>
+
+    <div class="flex flex-row" style="min-width:900px;">
+      <div class="w-1/3 px-3 py-2">
+      </div>
+      <div class="w-1/3 px-3 py-2">
+        Compiled Bytecode
+      </div>
+      <div class="w-1/3 px-3 py-2">
+        Global Variables
+      </div>
+    </div>
+
+    <div class="flex flex-row" style="min-width:900px;">
+      <div class="w-1/3 bg-slate-50 px-3 py-2">
+        <div style="height:200px; border:solid 1px #ccc; padding:3px;" id="smolEditor"></div>
+        <div class="right pt-2">
+          <button onclick="run();"
+            class="float-right bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Run
+          </button>
+          <p id="err" class="text-sm py-1"></p>
+        </div>
+      </div>
+      <div class="w-1/3 bg-slate-100 px-3 py-2">
+        <div id="decompiled"></div>
+      </div>
+      <div class="w-1/3 bg-slate-200 px-3 py-2">
+        <div id="results"></div>
+      </div>
+    </div>
+    <script>
+
+      function run() {
+        try {
+          var start = window.performance.now();
+
+          document.getElementById("decompiled").innerHTML = '';
+          document.getElementById("results").innerHTML = '';
+          document.getElementById("err").innerText = '';
+
+          var smol = SmolScript.SmolVM;
+
+          var vm = smol.Compile(editor.getValue());
+
+          vm.maxCycles = 100000000;
+
+          document.getElementById("decompiled").innerHTML = `<pre>${vm.decompile().replaceAll('<', '&lt;')}</pre>`;
+
+          vm.run();
+
+          var x = `<table style="width:100%;">`;
+
+          Object.keys(vm.globalEnv._variables).forEach((key) => {
+            x += `<tr><td style="font-weight:bold;">${key}</td><td>${vm.globalEnv._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
+          });
+
+          x += '</table>';
+
+          var end = window.performance.now();
+          var time = end - start;
+
+          document.getElementById("results").innerHTML = x;
+          document.getElementById("err").innerText = `Done in ${Math.round(time, 20)} ms`;
+        }
+        catch (e) {
+          document.getElementById("err").innerText = e;
+        }
+      }
+
+      editor = monaco.editor.create(document.getElementById('smolEditor'), {
+        value: `var y = 0;
 
 for (var x = -2; x < 10; x++) {
   y += x;
 }`,
-            automaticLayout: true,
-            scrollBeyondLastLine: false,
-            language: 'js',
-            theme: 'js',
-            minimap: {
-                enabled: false
-            },
-            //glyphMargin: false,
-            folding: false,
-            // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
-            // lineDecorationsWidth: 0,
-        });
-        
-      </script>
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        language: 'js',
+        theme: 'js',
+        minimap: {
+          enabled: false
+        },
+        //glyphMargin: false,
+        folding: false,
+        // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
+        // lineDecorationsWidth: 0,
+      });
 
-      </div>
+    </script>
+
+  </div>
 
 
-    </div>
+</div>

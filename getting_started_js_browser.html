@@ -1,0 +1,75 @@
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+
+layout: default
+permalink: /getting-started-js-browser
+selected_nav_item: Getting Started
+---
+
+<div class="md:flex mt-4 flex-col lg:flex-row">
+
+      <div class="mx-5 basis-full lg:basis-5/6 md:pr-10">
+        <h2 class="md:hidden">Getting Started</h2>
+
+        <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">Javascript (browser)</h5>
+  
+        <p class="py-3">
+        To start using SmolScript in your web browser, you only need to include one smolscript js file:
+        </p>
+
+        {% highlight html %}
+        <script src="https://smolscript.org/smolscript-v0.3.js"></script>
+        {% endhighlight %}
+
+        <p class="py-3">
+          I strongly recommend downloading a copy of this file and hosting it alongside your app.
+        </p>
+
+        <p class="py-3">
+        This gives you a SmolScript object in the global namescape. Initialize  and run a simple smol script like this:
+        </p>
+
+        <div class="border bg-slate-100 p-1">
+{% highlight js %}
+var exampleSmolScriptCode = @"
+
+  // This is the smol script program, not .net
+  var a = 10;
+
+  function multiplyA(valueToMultiplyBy) {
+    a = a * valueToMultiplyBy;
+  }
+
+  multiplyA(10);
+";
+
+var vm = SmolScript.SmolVM.Compile(exampleSmolScriptCode);
+
+vm.run();
+
+var valueOfA = vm.getGlobalVar("a");
+{% endhighlight %}
+</div>
+
+        <p class="py-3">
+          We're creating a string that contains our smol program code, and then creating a VM by compiling the code. Once we've
+          compiled, if there are no errors, we can .run() the VM to execute the entire program once.
+        </p>
+        <p class="py-3">
+          On the last line of this sample, once the program has finished running and control is back in our code,
+          we're getting the value of global variable 'a' from the VM. We only really support a few simple types, but
+          because Smol types 'use' Javascript variables as the underlying types, it's more flexible and than .net. 
+        </p>
+
+        <p class="py-3">
+          This is just a very quick getting started sample. You can call Smol functions from your Javascript apps, and you can register JS functions to call from SmolScript. More documentation and samples coming soon.
+        </p>
+
+      </div>
+
+      <div class="text-lg lg:ml-5 p-5 basis-full lg:basis-1/3">
+        {% include github_links.html %}
+      </div>
+
+    </div>
