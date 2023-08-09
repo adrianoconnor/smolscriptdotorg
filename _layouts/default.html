@@ -8,7 +8,8 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&family=Secular+One&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300&display=swap');
-    @import url('/pygments.css');
+    @import url('/pygments.css') screen and (prefers-color-scheme: light);
+    @import url('/pygments-dark.css') screen and (prefers-color-scheme: dark);
   </style>
   <style>
     body {
@@ -19,23 +20,33 @@
       font-family: 'Secular One';
     }
 
+    .font-secular {
+      font-family: 'Secular One';
+      font-weight: normal !important;
+    }
+
     pre {
         padding:10px;
-    }    
+    }
   </style>
   <title>SmolScript - {{page.selected_nav_item}}</title>
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
 </head>
 
-<body>
+<body class="dark:bg-slate-900 dark:text-slate-300">
   <div class="mt-10 text-lg container mx-auto px-5">
     <nav>
       <div class="x-max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         
-        <h1 class="border-solid border-4 border-black p-3 text-3xl text-black bg-gray400 inline-block"
-        style="box-shadow:6px 6px black"><a href="/">smol script</a> <span class="hidden sm:inline"
-          style="font-family:Lato; color:#222; font-size:10pt; font-weight:bold;" aria-label="cat ascii art">ฅ^•ﻌ•^ฅ</span></h1>
+        <h1 class="border-solid border-4 border-black dark:border-gray-500 p-3 text-3xl text-black dark:text-gray-300 bg-gray400 inline-block"
+        style="box-shadow:6px 6px black"><a href="/">smol script</a> <span class="hidden sm:inline text-sm font-sans"
+        aria-label="cat ascii art" style="font-family: 'Lato'; font-size:13.5px;">ฅ^<span style="font-weight:bold;">•ﻌ•</span>^ฅ</span></h1>
 
         <button onclick="let el = document.getElementById('navbar-default'); if (el.classList.contains('hidden')) el.classList.remove('hidden'); else el.classList.add('hidden');" data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
@@ -43,8 +54,8 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
             </svg>
         </button>      
-        <div class="hidden border border-gray-900 mt-5 bg-gray-100 rounded w-full md:border-0 md:block md:w-auto" id="navbar-default">
-          <ul class="font-medium flex flex-col p-4 md:p-0 mt-0 md:flex-row md:space-x-2 md:border-0 md:bg-white">            
+        <div class="hidden border border-gray-900 dark:border-slate-700 mt-5 rounded w-full md:border-0 md:block md:w-auto" id="navbar-default">
+          <ul class="font-medium flex flex-col p-4 md:p-0 mt-0 md:flex-row md:space-x-2 md:border-0">            
             {% include nav_link.html url="/" title="Home" %}
             {% include nav_link.html url="/getting-started" title="Getting Started" %}
             {% include nav_link.html url="/roadmap" title="Roadmap" %}
@@ -58,7 +69,7 @@
     
   </div>
 
-  <div class="my-10 pt-5 text-base border-t border-1 border-gray-300 container mx-auto px-5" style="font-family: 'Lato';">
+  <div class="my-10 pt-5 text-base text-gray-600 dark:text-slate-400 border-t border-1 border-gray-300 dark:border-slate-600 container mx-auto px-5" style="font-family: 'Lato';">
 
     &copy; Copyright Arctus Limited 2023<br />
     Created by Adrian O'Connor and made available under the MIT license

@@ -12,23 +12,24 @@ selected_nav_item: Getting Started
   <div class="mx-5 basis-full lg:basis-5/6 md:pr-10">
     <h2 class="md:hidden">Getting Started</h2>
 
-    <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 inline-block px-2 py-1">.net 6.0 + </h5>
+    <h5 class="mt-8 mb-4 text-lg bg-slate-200 dark:bg-slate-700 inline-block px-2 py-1">.net 6.0 + </h5>
 
     <p class="py-3">
       We only support dotnet core versions 6 and up. It would be pretty easy to add support for .net 4 I suspect, but
       it is definitely not on our roadmap.
     </p>
+
     <p class="py-3">
       To start using SmolScript in your project, add the <a
-        href="https://www.nuget.org/packages/SmolScript/#versions-body-tab" class="text-blue-600 underline">smolscript
-        nuget</a> either though the VS package manager or one the command line with <span
-        class="font-mono text-sm bg-slate-100">dotnet add smolscript</span>.
+        href="https://www.nuget.org/packages/SmolScript/#versions-body-tab" class="text-blue-600 dark:text-cyan-400 underline">smolscript
+        nuget</a> either though the VS package manager or on the command line with <span
+        class="font-mono text-sm bg-slate-100 dark:bg-slate-800">dotnet add smolscript</span>.
     </p>
     <p class="py-3">
       Initialize and run a simple smol script like this:
     </p>
 
-    <div class="border bg-slate-100 p-1 text-sm">
+    <div class="bg-slate-100 dark:bg-slate-600 p-1 text-sm">
 {% highlight csharp %}
 using SmolScript;
 

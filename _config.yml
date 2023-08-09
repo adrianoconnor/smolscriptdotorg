@@ -33,6 +33,8 @@ input: GFM
 #plugins:
 #  - jekyll-feed
 
+# https://stevenwestmoreland.com/2021/01/using-tailwind-css-with-jekyll.html#:~:text=Create%20Tailwind%20configuration%20file,top%2Dlevel%20of%20your%20project.&text=The%20purge%20configuration%20option%20includes,styles%20and%20optimize%20your%20CSS.
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
