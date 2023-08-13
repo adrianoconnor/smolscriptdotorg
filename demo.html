@@ -66,14 +66,22 @@ selected_nav_item: Interactive Demo
     <div class="flex flex-row" style="min-width:900px;">
       <div class="w-1/3 bg-slate-50 dark:bg-slate-500 px-3 py-2">
         <div style="height:200px; padding:3px;" id="smolEditor"></div>
+        <div id="msgSourceChanged" class="hidden p-2 m-2 text-xs bg-red-900 text-white border border-3 border-red-400">
+          The source code has changed since it was last compiled. Debugging will not show
+          highlighted code until you compile it again by resetting the VM.
+        </div>
         <div class="right pt-2">
-          <button onclick="run();"
+          <button onclick="run();" id="btnRun"
             class="float-right bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
             Run
           </button>
-          <button onclick="step();"
+          <button onclick="step();" id="btnStep"
             class="float-right bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
-            Step
+            Start in Debug
+          </button>
+          <button onclick="createVM();" id="btnReset"
+            class="float-right bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
+            Reset VM
           </button>
           <p id="err" class="text-sm py-1 dark:text-black"></p>
         </div>
@@ -96,12 +104,23 @@ selected_nav_item: Interactive Demo
       </div>
     </div>
     <script>
+      var compiledSource = "";
       var vm;
       var decorations = [];
+      var sourceChanged = false;
 
       function createVM() {
+        compiledSource = editor.getValue();
+        sourceChanged = false;
         document.getElementById("decompiled").innerHTML = '';
         document.getElementById("results").innerHTML = '';
+
+        decorations = editor.deltaDecorations(decorations,[]);
+
+        if (!document.getElementById("msgSourceChanged").classList.contains("hidden"))
+        {
+          document.getElementById("msgSourceChanged").classList.add("hidden");
+        }
 
         vm = SmolScript.SmolVM.Compile(editor.getValue());
         vm.maxCycles = 100000000;
@@ -115,6 +134,8 @@ selected_nav_item: Interactive Demo
           if (vm == undefined) {
             createVM();
           }
+
+          document.getElementById("btnStep").innerText = "Step";          
 
           document.getElementById("results").innerHTML = '';
           document.getElementById("err").innerText = '';
@@ -144,7 +165,7 @@ selected_nav_item: Interactive Demo
           const tf = vm.program.tokens[pending_instr.token_map_start_index];
           const tl = vm.program.tokens[pending_instr.token_map_end_index];
 
-          if (tf != undefined && tl != undefined) {
+          if (tf != undefined && tl != undefined && !sourceChanged) {
 
               decorations = editor.deltaDecorations(decorations,[
                 {
@@ -172,7 +193,7 @@ selected_nav_item: Interactive Demo
           x += '</table>';
 
           document.getElementById("results").innerHTML = x;
-          document.getElementById("err").innerText = `${vm.runMode}`;
+          document.getElementById("err").innerText = ``;
 
           if (vm.runMode == 3) {
             vm = undefined;
@@ -190,6 +211,12 @@ selected_nav_item: Interactive Demo
           if (vm == undefined) {
             createVM();
           }
+
+          var els = document.getElementById("decompiled").getElementsByClassName('editor-inline-highlight');
+          
+          [].forEach.call(els, function(el) {
+            el.classList.remove('editor-inline-highlight');
+          });
 
           decorations = editor.deltaDecorations(decorations,[]);
 
@@ -241,6 +268,16 @@ for (var x = -2; x < 10; x++) {
         folding: false,
         // Undocumented see https://github.com/Microsoft/vscode/issues/30795#issuecomment-410998882
         // lineDecorationsWidth: 0,
+      });
+
+      editor.getModel().onDidChangeContent((event) => {
+        /*if (compiledSource != editor.getValue()) {
+          document.getElementById("err").innerText = "Code has changed, you need to recompile!";
+        }*/
+        if (vm != undefined) {
+          document.getElementById("msgSourceChanged").classList.remove("hidden");
+          sourceChanged = true;
+        }
       });
 
     </script>
