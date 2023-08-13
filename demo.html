@@ -54,6 +54,7 @@ selected_nav_item: Interactive Demo
 
     <div class="flex flex-row" style="min-width:900px;">
       <div class="w-1/3 px-3 pt-2 pb-1 text-sm">
+
       </div>
       <div class="w-1/3 px-3 pt-2 pb-1 text-sm bg-gray-50 dark:bg-slate-700">
         Compiled Bytecode
@@ -66,9 +67,9 @@ selected_nav_item: Interactive Demo
     <div class="flex flex-row" style="min-width:900px;">
       <div class="w-1/3 bg-slate-50 dark:bg-slate-500 px-3 py-2">
         <div style="height:200px; padding:3px;" id="smolEditor"></div>
-        <div id="msgSourceChanged" class="hidden p-2 m-2 text-xs bg-red-900 text-white border border-3 border-red-400">
-          The source code has changed since it was last compiled. Debugging will not show
-          highlighted code until you compile it again by resetting the VM.
+        <div id="msgSourceChanged" class="hidden p-2 m-2 text-xs bg-red-900 text-white border border-3 border-red-400 font-sans">
+          The source code has changed since it was last compiled. Stepping through the code will not
+          highlight the active statement. To re-enable highlights, recompile to reset the VM.
         </div>
         <div class="right pt-2">
           <button onclick="run();" id="btnRun"
@@ -81,7 +82,7 @@ selected_nav_item: Interactive Demo
           </button>
           <button onclick="createVM();" id="btnReset"
             class="float-right bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
-            Reset VM
+            Compile
           </button>
           <p id="err" class="text-sm py-1 dark:text-black"></p>
         </div>
@@ -244,13 +245,16 @@ selected_nav_item: Interactive Demo
 
           x += '</table>';
 
+          x += `Stack size: ${vm.stack.length}`;
+
           var end = window.performance.now();
           var time = end - start;
 
           document.getElementById("results").innerHTML = x;
           document.getElementById("err").innerText = `Done in ${Math.round(time, 20)} ms`;
 
-          if (vm.runMode == 3) {
+          if (vm.getCurrentRunMode() == 'Done') {
+
             vm = undefined;
           }
         }
