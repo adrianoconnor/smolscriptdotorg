@@ -264,11 +264,42 @@ selected_nav_item: Interactive Demo
       }
 
       editor = monaco.editor.create(document.getElementById('smolEditor'), {
-        value: `var y = 0;
+        value: `function demo_func(start, end) { 
+  var y = 0;
+  for (var x = start; x < end; x++) {
+    y += x;
+  }
+  return y;
+}
+
+var some_number = demo_func(-2, 10);`,/*`var y = 0;
 
 for (var x = -2; x < 10; x++) {
   y += x;
 }`,
+/*
+var x = false
+    var z = 1
+
+    var y = x ? 1 : 2
+
+    function moo() {
+      return y
+    }
+
+    function moof() { return y }
+
+    function e() {
+      return
+      return // This is pointless, but we're just testing a specific scenario
+    }
+    
+    e()
+
+    z += moo()
+    var yy
+    yy = moof()
+  `,*/
         automaticLayout: true,
         scrollBeyondLastLine: false,
         language: 'javascript',
@@ -396,6 +427,8 @@ for (var x = -2; x < 10; x++) {
                 options: { inlineClassName: "editor-inline-highlight" },
               }
             ]);
+
+            editor.revealLine(tf.line);
         }
         else {
           decorations = editor.deltaDecorations(decorations,[]);
