@@ -21,11 +21,19 @@ selected_nav_item: Interactive Demo
       }
 
       .editor-inline-highlight {
-        background:rgba(190, 148, 105, 0.5);
+        background:rgba(100, 100, 80, 0.8);
+      }
+
+      #decompiled .editor-inline-highlight { 
+        background:rgba(190, 148, 105, 0.3);
+      }
+
+      .editor-inline-secondary-highlight {
+        background:rgba(190, 148, 105, 0.1);
       }
 
       .error { 
-        background: #caacac;
+        border-color: red; background:#ffdddd !important;
       }
     </style>
 
@@ -54,7 +62,7 @@ selected_nav_item: Interactive Demo
 
     <p class="py-3 mb-3">When you run code in the editor below, it is not running directly in your web browser's Javascript
       as you might expect, it is running in a standalone VM (and that VM is running in JS). Because of that, this script
-      has no access to anything like document, window or alert().</p>
+      has no access to anything like document, window or alert(), and you can step though the code statement by statement in debug mode.</p>
 
     <div class="flex flex-row" style="min-width:900px;">
       <div class="w-1/3 px-3 pt-2 pb-1 text-sm">
@@ -64,7 +72,7 @@ selected_nav_item: Interactive Demo
         Compiled Bytecode
       </div>
       <div class="w-1/3 px-3 pt-2 pb-1 text-sm bg-gray-100 dark:bg-slate-800 rounded-tr-lg">
-        Results (Global Variables)
+        Output
       </div>
     </div>
 
@@ -93,7 +101,7 @@ selected_nav_item: Interactive Demo
             </button>
           </div>
 
-          <p id="msgOutput" class="shadow-lg hidden rounded bg-slate-400 mt-3 clear-both text-sm py-1 px-2 dark:text-black"></p>
+          <p id="msgOutput" class="shadow-lg font-sans hidden rounded bg-white dark:bg-slate-400 border-2 border-slate-400 mt-3 clear-both text-sm py-1 px-2 dark:text-black"></p>
         </div>
       </div>
       <div class="w-1/3 bg-slate-100 dark:bg-slate-600 px-3 py-2" style="max-height:500px; overflow-y:scroll">
@@ -124,8 +132,14 @@ selected_nav_item: Interactive Demo
 
         document.getElementById("btnStep").innerText = "Start in Debug";    
         document.getElementById("btnReset").classList.add('hidden');
+        document.getElementById("msgSourceChanged").classList.add("hidden");
+        document.getElementById("msgOutput").classList.add("hidden");
 
-        createVM();
+        clearHighlightedInstructions();
+        //updateResultsPanel();
+        decorations = editor.deltaDecorations(decorations,[]);
+
+        //createVM();
       }
 
       function createVM() {
@@ -158,73 +172,25 @@ selected_nav_item: Interactive Demo
           }
 
           document.getElementById("btnStep").innerText = "Step";         
-          document.getElementById("btnReset").classList.remove('hidden');     
-
-          document.getElementById("results").innerHTML = '';
-          document.getElementById("msgOutput").innerText = '';
+          document.getElementById("btnReset").classList.remove('hidden'); 
 
           if (vm.runMode == 4 || 
               (vm.code_section == 0 && vm.program.code_sections[vm.code_section].length -1 <= vm.pc)) {
-            document.getElementById("msgOutput").innerText = 'Done';
+            document.getElementById("msgOutput").innerText = `Finished running program.`;
+            document.getElementById("msgOutput").classList.remove("hidden");
             vm = undefined;
             return;
           }
 
+          document.getElementById("results").innerHTML = '';
+          document.getElementById("msgOutput").innerText = '';
+
           vm.step();
           
-          var pending_instr = vm.program.code_sections[vm.code_section][vm.pc];
+          highlightCurrentSection();
 
-          var els = document.getElementById("decompiled").getElementsByClassName('editor-inline-highlight');
-          
-          [].forEach.call(els, function(el) {
-            el.classList.remove('editor-inline-highlight');
-          });
+          updateResultsPanel();
 
-          var cs = document.getElementById(`cs_${vm.code_section}_${vm.pc}`);
-          if (cs != undefined) {
-            cs.classList.add('editor-inline-highlight');
-
-            //cs.scrollIntoView({ behavior: 'smooth' });     
-
-            var box = cs.parentElement.parentElement.parentElement;
-            var elPos = cs.offsetTop - box.offsetTop;
-            //alert(elPos);
-            //alert(box.scrollTop);
-            //alert(box.offsetHeight);
-            box.scrollTo({ top: elPos - 50, behavior: 'smooth' }); 
-          }
-
-          const tf = vm.program.tokens[pending_instr.token_map_start_index];
-          const tl = vm.program.tokens[pending_instr.token_map_end_index];
-
-          if (tf != undefined && tl != undefined && !sourceChanged) {
-
-              decorations = editor.deltaDecorations(decorations,[
-                {
-                  range: new monaco.Range
-                         (
-                              tf.line, 
-                              tf.col + 1, 
-                              tl.line, 
-                              tl.col + (tl.end_pos - tl.start_pos) + 1
-                         ),
-                  options: { inlineClassName: "editor-inline-highlight" },
-                }
-              ]);
-          }
-          else {
-            decorations = editor.deltaDecorations(decorations,[]);
-          }
-
-          var x = `<div class="shadow-lg rounded bg-slate-400 mt-2 text-black py-2 px-4"><table style="width:100%;">`;
-
-          Object.keys(vm.globalEnv._variables).forEach((key) => {
-            x += `<tr><td style="font-weight:bold;">${key}</td><td>${vm.globalEnv._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
-          });
-
-          x += '</table></div>';
-
-          document.getElementById("results").innerHTML = x;
           document.getElementById("msgOutput").innerText = ``;
 
           if (vm.getCurrentRunMode() == 'Done') {
@@ -248,35 +214,23 @@ selected_nav_item: Interactive Demo
             createVM();
           }
 
-          var els = document.getElementById("decompiled").getElementsByClassName('editor-inline-highlight');
-          
-          [].forEach.call(els, function(el) {
-            el.classList.remove('editor-inline-highlight');
-          });
+          clearHighlightedInstructions();
 
           decorations = editor.deltaDecorations(decorations,[]);
 
-          var start = window.performance.now();
+          //var start = window.performance.now();
 
           document.getElementById("results").innerHTML = '';
           document.getElementById("msgOutput").innerText = '';
 
           vm.run();
 
-          var x = `<div class="shadow-lg rounded bg-slate-400 mt-2 text-black py-2 px-4"><table style="width:100%;">`;
+          updateResultsPanel();
 
-          Object.keys(vm.globalEnv._variables).forEach((key) => {
-            x += `<tr><td style="font-weight:bold;">${key}</td><td>${vm.globalEnv._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
-          });
+          //var end = window.performance.now();
+          //var time = end - start;
 
-          x += '</table></div>';
 
-          //x += `Stack size: ${vm.stack.length}`;
-
-          var end = window.performance.now();
-          var time = end - start;
-
-          document.getElementById("results").innerHTML = x;
           
           if (vm.getCurrentRunMode() == 'Done') {
 
@@ -317,7 +271,7 @@ for (var x = -2; x < 10; x++) {
 }`,
         automaticLayout: true,
         scrollBeyondLastLine: false,
-        language: 'js',
+        language: 'javascript',
         theme: 'vs-dark',
         minimap: {
           enabled: false
@@ -338,15 +292,64 @@ for (var x = -2; x < 10; x++) {
         }
       });
 
-      function highlightCurrentSection() {
-
-        var pending_instr = vm.program.code_sections[vm.code_section][vm.pc];
-
+      function clearHighlightedInstructions() {
         var els = document.getElementById("decompiled").getElementsByClassName('editor-inline-highlight');
 
         [].forEach.call(els, function(el) {
           el.classList.remove('editor-inline-highlight');
         });
+
+        var elsx = document.getElementById("decompiled").getElementsByClassName('editor-inline-secondary-highlight');
+
+       for(var i = elsx.length - 1; i >= 0; i--) {
+          elsx[i].classList.remove('editor-inline-secondary-highlight');
+        };
+      }
+
+      function updateResultsPanel() {
+
+        var output = `<div class="shadow-lg rounded font-sans bg-white dark:bg-slate-400 mt-2 text-black py-2 px-4">`
+        output += `<p class="text-gray-400 dark:text-gray-700 mb-3">Global Variables</p><table style="width:100%;">`;
+        Object.keys(vm.globalEnv._variables).forEach((key) => {
+          output += `<tr><td style="font-weight:bold;">${key}</td><td>${vm.globalEnv._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
+        });
+        output += '</table></div>';
+
+        var env = vm.environment;
+        output += `<div class="shadow-lg rounded font-sans bg-white dark:bg-slate-400 mt-2 text-black py-2 px-4">`
+        output += `<p class="text-gray-400 dark:text-gray-700 mb-3">Local Scope Variables</p><table style="width:100%;">`;
+        var added = [];
+        while(env != undefined && env != vm.globalEnv) {
+            Object.keys(env._variables).forEach((key) => {
+              if (!added.includes(key)) {
+                output += `<tr><td style="font-weight:bold;">${key}</td><td>${env._variables[key].toString().replaceAll('<', '&lt;')}</td></tr>`;
+              }
+              added.push(key);            
+            });
+
+            env = env.enclosing;
+        }
+        output += '</table></div>';
+
+        /*
+          output += `<div class="shadow-lg rounded font-sans bg-white dark:bg-slate-400 mt-2 text-black py-2 px-4">`
+          output += `<p class="text-gray-400 mb-3">Stack</p><table style="width:100%;">`;
+
+          [].forEach.call(vm.stack, function (item, idx) {
+            output += `<tr><td style="font-weight:bold;">${idx}</td><td>${item.toString().replaceAll('<', '&lt;')}</td></tr>`;
+          });
+
+          output += '</table></div>';
+        */
+
+        document.getElementById("results").innerHTML = output;
+      }
+
+      function highlightCurrentSection() {
+
+        var pending_instr = vm.program.code_sections[vm.code_section][vm.pc];
+
+        clearHighlightedInstructions();
 
         var cs = document.getElementById(`cs_${vm.code_section}_${vm.pc}`);
         if (cs != undefined) {
@@ -356,11 +359,25 @@ for (var x = -2; x < 10; x++) {
 
           var box = cs.parentElement.parentElement.parentElement;
           var elPos = cs.offsetTop - box.offsetTop;
-          //alert(elPos);
           //alert(box.scrollTop);
           //alert(box.offsetHeight);
           box.scrollTo({ top: elPos - 50, behavior: 'smooth' }); 
         }
+
+        //[].forEach.call(vm.program.code_sections[vm.code_section], function(instr, idx) {
+        for (var idx = vm.pc; idx < vm.program.code_sections[vm.code_section].length; idx++) {
+          var instr = vm.program.code_sections[vm.code_section][idx];
+          if (instr.token_map_start_index == pending_instr.token_map_start_index
+              && instr.token_map_end_index == pending_instr.token_map_end_index) {
+            if (idx != vm.pc) {
+              var csx = document.getElementById(`cs_${vm.code_section}_${idx}`);
+              csx.classList.add('editor-inline-secondary-highlight');
+            }
+          }
+          else {
+            break;
+          }
+        };
 
         const tf = vm.program.tokens[pending_instr.token_map_start_index];
         const tl = vm.program.tokens[pending_instr.token_map_end_index];
