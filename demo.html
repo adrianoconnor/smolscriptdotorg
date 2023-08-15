@@ -83,7 +83,7 @@ selected_nav_item: Interactive Demo
           The source code has changed since it was last compiled. Stepping through the code will not
           highlight the active statement. To re-enable highlights, reset the VM and run again.
         </div>
-        <div class="pt-2">
+        <div class="pt-2 select-none">
           <div class="text-right" style="position:relative;">
             <button onclick="step();" id="btnStep"
               class="bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
@@ -185,7 +185,7 @@ selected_nav_item: Interactive Demo
           document.getElementById("results").innerHTML = '';
           document.getElementById("msgOutput").innerText = '';
 
-          vm.step();
+          vm.step(true);
           
           highlightCurrentSection();
 
@@ -362,16 +362,18 @@ var x = false
         }
         output += '</table></div>';
 
-        /*
+        
           output += `<div class="shadow-lg rounded font-sans bg-white dark:bg-slate-400 mt-2 text-black py-2 px-4">`
-          output += `<p class="text-gray-400 mb-3">Stack</p><table style="width:100%;">`;
+          output += `<p class="text-gray-400 dark:text-gray-700 mb-3">Stack</p><table style="width:100%;">`;
 
-          [].forEach.call(vm.stack, function (item, idx) {
-            output += `<tr><td style="font-weight:bold;">${idx}</td><td>${item.toString().replaceAll('<', '&lt;')}</td></tr>`;
-          });
+          //for(var idx = vm.stack.length - 1; idx >= 0; idx--) {
+          for(var idx = 0; idx < vm.stack.length; idx++) {
+            var item = vm.stack[idx];
+            output += `<tr><td valign="middle" class="text-xs">${idx == vm.stack.length - 1 ? "top":""}</td><!--<td style="font-weight:bold;">${idx}</td>--><td>${item.toString().replaceAll('<', '&lt;')}</td></tr>`;
+          };
 
           output += '</table></div>';
-        */
+        
 
         document.getElementById("results").innerHTML = output;
       }
