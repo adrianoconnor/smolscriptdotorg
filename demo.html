@@ -13,7 +13,7 @@ selected_nav_item: Interactive Demo
 
     <h5 class="mt-8 mb-4 text-lg font-bold bg-slate-200 dark:bg-slate-700 inline-block px-2 py-1">interactive demo</h5>
 
-    <script src="smolscript-v0.3d.js"></script>
+    <script src="smolscript-v0.4b.js"></script>
 
     <style>
       body {
@@ -72,7 +72,7 @@ selected_nav_item: Interactive Demo
         Compiled Bytecode
       </div>
       <div class="w-1/3 px-3 pt-2 pb-1 text-sm bg-gray-100 dark:bg-slate-800 rounded-tr-lg">
-        Output
+        VM State
       </div>
     </div>
 
@@ -88,6 +88,11 @@ selected_nav_item: Interactive Demo
             <button onclick="step();" id="btnStep"
               class="bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
               Start in Debug
+            </button>
+          
+            <button onclick="stepVM();" id="btnStepVM"
+              class="hidden bg-blue-500 dark:bg-slate-700 hover:bg-blue-700 dark:hover:bg-cyan-600 text-white font-bold py-1 px-4 mr-1 rounded font-sans">
+              VM Step
             </button>
 
             <button onclick="run();" id="btnRun"
@@ -164,7 +169,7 @@ selected_nav_item: Interactive Demo
         document.getElementById("decompiled").innerHTML = `<pre>${vm.program.decompile(true)}</pre>`;
       }
 
-      function step() {
+      function step(stepModeVM = false) {
         try {
 
           if (vm == undefined) {
@@ -172,6 +177,7 @@ selected_nav_item: Interactive Demo
           }
 
           document.getElementById("btnStep").innerText = "Step";         
+          document.getElementById("btnStepVM").classList.remove('hidden'); 
           document.getElementById("btnReset").classList.remove('hidden'); 
 
           if (vm.runMode == 4 || 
@@ -185,7 +191,7 @@ selected_nav_item: Interactive Demo
           document.getElementById("results").innerHTML = '';
           document.getElementById("msgOutput").innerText = '';
 
-          vm.step(true);
+          vm.step(stepModeVM);
           
           highlightCurrentSection();
 
@@ -205,6 +211,10 @@ selected_nav_item: Interactive Demo
           document.getElementById("msgOutput").classList.add("error");
           vm == undefined;
         }
+      }
+
+      function stepVM() {
+        step(true);
       }
 
       function run() {
@@ -236,6 +246,7 @@ selected_nav_item: Interactive Demo
 
             vm = undefined;
             document.getElementById("btnStep").innerText = "Start in Debug";    
+            document.getElementById("btnStepVM").classList.add('hidden'); 
             document.getElementById("btnReset").classList.add('hidden');
             document.getElementById("msgSourceChanged").classList.add("hidden");
 
@@ -250,7 +261,8 @@ selected_nav_item: Interactive Demo
 
             highlightCurrentSection();
 
-            document.getElementById("btnStep").innerText = "Step";    
+            document.getElementById("btnStep").innerText = "Step";
+            document.getElementById("btnStepVM").classList.remove('hidden'); 
             document.getElementById("btnReset").classList.remove('hidden');
             document.getElementById("msgOutput").classList.add("hidden");
           }
